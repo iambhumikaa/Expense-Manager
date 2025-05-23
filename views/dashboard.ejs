@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="this is the dashboard - visualize your income and expenses">
+    <title>Dashboard</title>
+    <link href="/main.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link rel="preload" as="style"
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&display=swap">
+
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&display=swap"
+        rel="stylesheet" media="print" onload="this.media='all'">
+
+    <noscript>
+        <link
+            href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&display=swap"
+            rel="stylesheet">
+    </noscript>
+</head>
+
+<body>
+
+    <%- include("partials/header") %>
+
+        <article class="dashboard_pg">
+            <div class="dashboard_btn_div">
+                <button class="dashboard_btn income_btn" onclick="incomeChart()">Income</button>
+                <button class="dashboard_btn expenses_btn" onclick="expenseChart()">Expenses</button>
+                <button class="dashboard_btn compare_btn" onclick="compareChart()">Compare</button>
+            </div>
+            <div class="chart_div">
+                <canvas id="myChart"></canvas>
+            </div>
+        </article>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            const expensesData = <%- JSON.stringify(expenses || []) %>;
+            const incomeData = <%- JSON.stringify(income || []) %>;
+        </script>
+        <script src="/chart.js"></script>
+        <script>
+            window.onload = () => {
+                compareChart();
+            };
+        </script>
+</body>
+
+</html>

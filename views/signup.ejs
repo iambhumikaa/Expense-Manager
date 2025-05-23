@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sign Up to use Expense Manager">
+    <title>Sign Up</title>
+    <link href="/main.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&display=swap">
+
+    <link 
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&display=swap" 
+      rel="stylesheet" 
+      media="print" 
+      onload="this.media='all'">
+
+    <noscript>
+      <link 
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&display=swap" 
+        rel="stylesheet">
+    </noscript>
+</head>
+
+<body class="loginPage_main">
+    <div class="login_pg">
+        <h1 class="login_pg_h1">Welcome to Expense manager!</h1>
+    
+        <div class="login_form">
+            <form action="/signup" method="POST">
+
+                <label class="Labels">Email</label>
+                <input type="email" name="userEmail" class="userEmail" placeholder="Email" required>
+
+                <label class="Labels">Password</label>
+                <input type="password" name="password" class="password" placeholder="Password" required>
+
+                <button class="submit_btn">Submit</button>
+
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

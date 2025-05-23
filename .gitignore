@@ -1,0 +1,23 @@
+# Node modules (dependencies)
+node_modules/
+
+# Environment variables and secrets
+.env
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IDE/editor folders and config
+.vscode/
+.idea/
+
+# Log files
+*.log
+
+# Cache and temp files
+*.tmp
+.cache/
+
+# npm debug files
+npm-debug.log*

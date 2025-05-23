@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="page for editing your Expenses">
+    <title>Edit Expenses</title>
+    <link href="/main.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link rel="preload" as="style"
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&display=swap">
+
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&display=swap"
+        rel="stylesheet" media="print" onload="this.media='all'">
+
+    <noscript>
+        <link
+            href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&display=swap"
+            rel="stylesheet">
+    </noscript>
+</head>
+
+<body>
+    <form class="expenses_form" id="expensesForm" action="/update-expense/<%= expense.id %>" method="POST"
+        aria-labelledby="edit-expenses-form-heading">
+        <div class="form_heading_div">
+            <h1 class="form_heading">Edit Expense</h1>
+        </div>
+        <div class="form_sub_divs">
+            <label for="category">Category</label>
+            <input class="inputField" type="text" id="category" name="category" placeholder="Enter category"
+                value="<%= expense.category %>" required>
+        </div>
+        <div class="form_sub_divs">
+            <label for="amount">Amount</label>
+            <input class="inputField" type="number" id="amount" name="amount" placeholder="$ Amount here"
+                value="<%= expense.amount %>" required>
+        </div>
+        <div class="form_sub_divs">
+            <label for="description">Description</label>
+            <textarea class="inputField" id="description" name="description" placeholder="Description..."
+                rows="4"><%= expense.description %></textarea>
+        </div>
+        <div class="form_sub_divs">
+            <label for="date">Date</label>
+            <input class="inputField" type="date" name="date" id="date"
+                value="<%= expense.date.toISOString().split('T')[0] %>" required>
+        </div>
+        <div class="expense_add_btn_div">
+            <button type="submit" class="expense_add_btn">UPDATE</button>
+        </div>
+    </form>
+</body>
+
+</html>
