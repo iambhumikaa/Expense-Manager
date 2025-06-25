@@ -7,33 +7,17 @@
     <meta name="description" content="page for adding your Expenses">
     <title>Expenses</title>
     <link href="/main.css" rel="stylesheet">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link rel="preload" as="style"
-        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&display=swap">
-
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&display=swap"
-        rel="stylesheet" media="print" onload="this.media='all'">
-
-    <noscript>
-        <link
-            href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&display=swap"
-            rel="stylesheet">
-    </noscript>
 </head>
 
 <body>
-
     <%- include ("partials/header") %>
 
         <article class="Expenses_section">
             <div class="expense_div">
-                <form class="expenses_form" id="expensesForm" action="/add-expense" method="POST"
+                <form class="expenses_form" id="expensesForm" action="/expense" method="POST"
                     aria-labelledby="add-expenses-form-heading">
                     <div class="form_heading_div">
-                        <h1 class="form_heading">Add Expenses</h1>
+                        <h1 style="color: #b21818;" class="form_heading">Add Expense</h1>
                     </div>
                     <div class="form_sub_divs">
                         <label for="category">Category</label>
@@ -42,7 +26,7 @@
                     </div>
                     <div class="form_sub_divs">
                         <label for="amount">Amount</label>
-                        <input class="inputField" type="number" id="amount" name="amount" placeholder="$ Amount here"
+                        <input class="inputField" type="number" id="amount" name="amount" placeholder="₹ Amount here"
                             required>
                     </div>
                     <div class="form_sub_divs">
@@ -55,13 +39,33 @@
                         <input class="inputField" type="date" name="date" id="date" required>
                     </div>
                     <div class="expense_add_btn_div">
-                        <button type="submit" class="expense_add_btn">ADD</button>
+                        <button class="expense_add_btn" type="submit">
+                            <span>
+                                <svg height="22" width="22" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z" fill="currentColor"></path>
+                                </svg>
+                                Add
+                            </span>
+                        </button>
                     </div>
                 </form>
 
                 <div class="expenses_container">
                     <section class="output_div">
-                        <h1 class="output_div_heading">Expenses of the month</h1>
+                        <div>
+                            <label for="monthDropdown">Choose a month:</label>
+                            <select id="monthDropdown" name="month">
+                                <% monthNames.forEach((month, index)=> { %>
+                                    <option value="<%= index %>" <%=selectedMonth===index ? "selected" : "" %>>
+                                        <%= month %>
+                                    </option>
+                                    <% }) %>
+                            </select>
+                        </div>
+                        <h1 class="output_div_heading" >Expenses of the month - <span id="currentMonth">
+                                <%= selectedMonthsName %>
+                            </span></h1>
                         <div class="scrollable_div">
                             <% if (expenses.length===0) { %>
                                 <p class="no_expense_message">No expenses recorded yet.</p>
@@ -73,7 +77,7 @@
                                                     <%= expense.category %>
                                                 </span>
                                                 <div class="icon_div">
-                                                    <form action="/edit-expense-form/<%= expense.id %>" method="GET">
+                                                    <form action="/expense/<%= expense._id %>" method="GET">
                                                         <button aria-label="edit-button" type="submit"
                                                             style="background: none; border: none; padding: 0; cursor: pointer;">
                                                             <svg class="icon edit" xmlns="http://www.w3.org/2000/svg"
@@ -82,7 +86,8 @@
                                                                     d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160L0 416c0 53 43 96 96 96l256 0c53 0 96-43 96-96l0-96c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 96c0 17.7-14.3 32-32 32L96 448c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l96 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 64z" />
                                                             </svg></button>
                                                     </form>
-                                                    <form action="/delete-expense/<%= expense.id %>" method="POST"
+                                                    <form action="/expense/<%= expense._id %>?_method=DELETE"
+                                                        method="POST"
                                                         onclick="return confirm('Are you sure you want to delete this expense?');">
                                                         <button aria-label="delete-button" type="submit"
                                                             style="background: none; border: none; padding: 0; cursor: pointer;">
@@ -98,7 +103,7 @@
                                             </div>
 
                                             <span class="category_amount">
-                                                $<%= expense.amount %> | <span class="category_date">
+                                                ₹<%= expense.amount %> | <span class="category_date">
                                                         <%= new Date(expense.date).toISOString().split('T')[0] %>
                                                     </span>
                                             </span>
@@ -110,7 +115,7 @@
 
                     <div class="DisplayTotal">
                         <span class="DisplayTotal_content">Total Expense:
-                            <span id="total_amount">$<%= expenses.reduce((total, exp)=> total + (parseFloat(exp.amount)
+                            <span id="total_amount">₹<%= expenses.reduce((total, exp)=> total + (parseFloat(exp.amount)
                                     ||
                                     0), 0) %></span>
                         </span>
@@ -118,6 +123,31 @@
                 </div>
             </div>
         </article>
+        <script>
+            const monthDropdown = document.getElementById("monthDropdown");
+            const currentMonthIndex = new Date().getMonth();
+            const presentYear = new Date().getFullYear();
+
+            window.addEventListener("DOMContentLoaded", () => {
+                const urlParams = new URLSearchParams(window.location.search);
+                const hasMonth = urlParams.has("month");
+                console.log(hasMonth);
+
+                if (!hasMonth) {
+                    window.location.href = `/expense?month=${currentMonthIndex}&year=${presentYear}`;
+                }
+            });
+
+            monthDropdown.addEventListener("change", () => {
+                const selectedMonthIndex = monthDropdown.value;
+                const selectedMonthName = monthDropdown[selectedMonthIndex].innerText;
+
+                window.location.href = `/expense?month=${selectedMonthIndex}&year=${presentYear}`;
+
+                console.log("Selected month index:", selectedMonthIndex, presentYear);
+                console.log("Selected month name and current year:", selectedMonthName, presentYear);
+            });
+        </script>
 </body>
 
 </html>

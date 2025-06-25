@@ -20,12 +20,12 @@ function groupByIncome(dataArray) {
     const grouped = {};
 
     dataArray.forEach(item => {
-        const title = item.title;
+        const category = item.category;
         const amount = Number(item.amount);
-        if (grouped[title]) {
-            grouped[title] += amount;
+        if (grouped[category]) {
+            grouped[category] += amount;
         } else {
-            grouped[title] = amount;
+            grouped[category] = amount;
         }
     });
 
@@ -38,7 +38,9 @@ function expenseChart() {
     }
     const groupedExpenses = groupByCategory(expensesData);
     const labels = Object.keys(groupedExpenses);
+    console.log("expenses:", labels);
     const data = Object.values(groupedExpenses);
+    console.log("data:", data);
 
     const ctx = document.getElementById('myChart').getContext('2d');
     chartInstance = new Chart(ctx, {
@@ -53,6 +55,7 @@ function expenseChart() {
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             scales: {
                 y: { beginAtZero: true }
             }
@@ -81,6 +84,7 @@ function incomeChart() {
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             scales: {
                 y: { beginAtZero: true }
             }
@@ -97,6 +101,7 @@ function compareChart() {
     const totalExpenses = expensesData.reduce((prev, curr) => prev + Number(curr.amount), 0);
     const totalIncome = incomeData.reduce((prev, curr) => prev + Number(curr.amount), 0);
     const labels = ["Total Expenses", "Total Income"];
+    console.log(labels);
 
     const ctx = document.getElementById('myChart').getContext('2d');
     chartInstance = new Chart(ctx, {
@@ -111,6 +116,7 @@ function compareChart() {
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             scales: {
                 y: { beginAtZero: true }
             },
@@ -129,3 +135,66 @@ function compareChart() {
     }
     );
 }
+
+// Polar pie chart for expenses of month
+const chartCanvas = document.getElementById("expensePolarChart");
+
+const selectedMonths = selMonth;
+
+const groupedExpenses = groupByCategory(expensesData);
+
+const labels = Object.keys(groupedExpenses);
+const data = Object.values(groupedExpenses);
+
+const colors = [
+    "#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0",
+    "#9966FF", "#FF9F40", "#C9CBCF", "#8DFF8A"
+];
+
+new Chart(chartCanvas, {
+    type: "polarArea",
+    data: {
+        labels: labels,
+        datasets: [{
+            label: "This Month's Expenses by Category",
+            data: data,
+            backgroundColor: colors,
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            r: {
+                ticks: {
+                    display: false 
+                },
+                grid: {
+                    circular: true
+                }
+            }
+        },
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'center'
+            },
+            tooltip: {
+                callbacks: {
+                    label: function (context) {
+                        return `${context.label}: ₹${context.formattedValue}`;
+                    }
+                }
+            },
+            title: {
+                display: true,
+                text: 'Monthly Expense breakdown',
+                color: '#e02a2a',
+                font: {
+                    size: 15,
+                    weight: '400',
+                }
+            }
+        }
+    }
+});

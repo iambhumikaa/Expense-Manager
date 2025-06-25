@@ -7,21 +7,6 @@
     <meta name="description" content="this is the dashboard - visualize your income and expenses">
     <title>Dashboard</title>
     <link href="/main.css" rel="stylesheet">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link rel="preload" as="style"
-        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&display=swap">
-
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&display=swap"
-        rel="stylesheet" media="print" onload="this.media='all'">
-
-    <noscript>
-        <link
-            href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&display=swap"
-            rel="stylesheet">
-    </noscript>
 </head>
 
 <body>
@@ -29,13 +14,61 @@
     <%- include("partials/header") %>
 
         <article class="dashboard_pg">
-            <div class="dashboard_btn_div">
-                <button class="dashboard_btn income_btn" onclick="incomeChart()">Income</button>
-                <button class="dashboard_btn expenses_btn" onclick="expenseChart()">Expenses</button>
-                <button class="dashboard_btn compare_btn" onclick="compareChart()">Compare</button>
+            <div class="dashboard_upper_div">
+                <div class="welcome-user">Hello,<br>
+                    <spam class="userName">
+                        <%= name %>
+                    </spam>
+                </div>
+
+                <div class="dashboard_btn_div">
+                    <button class="dashboard_btn income_btn" onclick="incomeChart()">Income</button>
+                    <button class="dashboard_btn expenses_btn" onclick="expenseChart()">Expenses</button>
+                    <button class="dashboard_btn compare_btn" onclick="compareChart()">Compare</button>
+                </div>
             </div>
-            <div class="chart_div">
-                <canvas id="myChart"></canvas>
+
+            <div class="choose-month-dashboard">
+                <label for="monthDropdown">Choose a month:</label>
+                <select id="monthDropdown-dashboard" name="month">
+                    <% monthNames.forEach((month, index)=> { %>
+                        <option class="selected-month" value="<%= index %>" <%=selectedMonth===index
+                            ? "selected" : "" %>>
+                            <%= month %>
+                        </option>
+                        <% }) %>
+                </select>
+            </div>
+
+            <div class="container">
+                <div class="chart_div">
+                    <canvas id="myChart"></canvas>
+                </div>
+                <div class="user_balance">
+                    <div>
+                        <h2 class="balance_heading">📅 Month: <span id="currentMonth">
+                                <%= selectedMonthsName %>
+                            </span></h2>
+                        <div class="showBalanceDiv">
+                            <span class="ShowBalance income">Total Income: ₹<%= totalIncome %></span>
+                            <span class="ShowBalance expenses">Total Expense: ₹<%= totalExpense %></span>
+                            <span class="ShowBalance saving">Savings: ₹<%= savings %></span>
+                        </div>
+
+
+                        <% if (savings < 0) { %>
+                            <h3 class="balance-suggestions">⚠️ You are currently spending more than your income.</h3>
+                            <% } else if (savings> 0) { %>
+                                <h3 class="balance-suggestions">✅ Great job! You are saving money this month. Keep it
+                                    up!</h3>
+                                <% } else { %>
+                                    <h3 class="balance-suggestions">No records found.</h3>
+                                    <% } %>
+                    </div>
+                    <div class="expenseChartPerMonth">
+                        <canvas id="expensePolarChart"></canvas>
+                    </div>
+                </div>
             </div>
         </article>
 
@@ -43,12 +76,37 @@
         <script>
             const expensesData = <%- JSON.stringify(expenses || []) %>;
             const incomeData = <%- JSON.stringify(income || []) %>;
+            const selMonth = <%- selectedMonth %>;
         </script>
         <script src="/chart.js"></script>
         <script>
             window.onload = () => {
                 compareChart();
             };
+
+            const monthDropdown = document.getElementById("monthDropdown-dashboard");
+            const currentMonthIndex = new Date().getMonth();
+            const presentYear = new Date().getFullYear();
+
+            window.addEventListener("DOMContentLoaded", () => {
+                const urlParams = new URLSearchParams(window.location.search);
+                const hasMonth = urlParams.has("month");
+                console.log(hasMonth);
+
+                if (!hasMonth) {
+                    window.location.href = `/dashboard?month=${currentMonthIndex}&year=${presentYear}`;
+                }
+            });
+
+            monthDropdown.addEventListener("change", () => {
+                const selectedMonthIndex = monthDropdown.value;
+                const selectedMonthName = monthDropdown[selectedMonthIndex].innerText;
+
+                window.location.href = `/dashboard?month=${selectedMonthIndex}&year=${presentYear}`;
+
+                console.log("Selected month index:", selectedMonthIndex, presentYear);
+                console.log("Selected month name and current year:", selectedMonthName, presentYear);
+            });
         </script>
 </body>
 

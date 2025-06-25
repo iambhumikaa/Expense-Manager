@@ -7,25 +7,10 @@
     <meta name="description" content="page for editing your Expenses">
     <title>Edit Expenses</title>
     <link href="/main.css" rel="stylesheet">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link rel="preload" as="style"
-        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&display=swap">
-
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&display=swap"
-        rel="stylesheet" media="print" onload="this.media='all'">
-
-    <noscript>
-        <link
-            href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&display=swap"
-            rel="stylesheet">
-    </noscript>
 </head>
 
-<body>
-    <form class="expenses_form" id="expensesForm" action="/update-expense/<%= expense.id %>" method="POST"
+<body style="display: flex; align-items: center; justify-content: center;">
+    <form class="expensesEdit_form" id="expensesForm" action="/expense/<%= expense._id %>?_method=PATCH" method="POST"
         aria-labelledby="edit-expenses-form-heading">
         <div class="form_heading_div">
             <h1 class="form_heading">Edit Expense</h1>
@@ -51,7 +36,7 @@
                 value="<%= expense.date.toISOString().split('T')[0] %>" required>
         </div>
         <div class="expense_add_btn_div">
-            <button type="submit" class="expense_add_btn">UPDATE</button>
+            <button type="submit" class="expense_add_btn" style="color: white;">UPDATE</button>
         </div>
     </form>
 </body>
