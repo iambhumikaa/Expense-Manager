@@ -39,6 +39,7 @@ A secure and visually insightful full-stack web application that helps users man
 1. Clone the Repository
 
 git clone https://github.com/your-username/expense-manager.git
+
 cd expense-manager
 
 2. Install Dependencies
@@ -71,14 +72,14 @@ http://localhost:3000
 
 expense-manager/
 │
-├── controllers/       # Route logic
-├── models/            # Mongoose schemas
-├── routes/            # Express route definitions
-├── views/             # EJS templates
-├── public/            # Static files (CSS, JS, videoes)
-├── middleware/        # Auth & token middleware
-├── .env               # Environment variables
-├── server.js          # Entry point
+├── controllers/       
+├── models/           
+├── routes/             
+├── views/             
+├── public/            
+├── middleware/      
+├── .env                
+├── server.js          
 └── package.json
 
 ---
